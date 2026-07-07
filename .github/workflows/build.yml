@@ -6,6 +6,10 @@ on:
     paths:
       - 'new-game-project/**'
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   export:
     name: Export Game Builds
@@ -87,3 +91,33 @@ jobs:
             nohup ./LinuxDedicatedServer.sh > server.log 2>&1 &
             sleep 2
           "
+
+  release:
+    name: Create GitHub Release
+    needs: export
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download builds
+        uses: actions/download-artifact@v4
+        with:
+          name: game-servers
+          path: ./release
+
+      - name: Generate release tag
+        run: |
+          echo "RELEASE_TAG=build-$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: Build ${{ github.sha }}
+          body: |
+            Auto-built from commit ${{ github.sha }}
+          files: |
+            ./release/LinuxDedicatedServer.zip
+            ./release/WindowsDedicatedServer.zip
+            ./release/MacDedicatedServer.zip
