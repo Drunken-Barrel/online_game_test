@@ -90,6 +90,18 @@ jobs:
             sleep 3
           "
 
+      - name: Verify server and notify Discord
+        run: |
+          VERSION="${{ github.ref_name }}"
+          if [ "$VERSION" = "main" ]; then VERSION="latest (${{ github.sha }})"; fi
+          sleep 3
+          nc -zvu -w5 ${{ secrets.HOMELAB_HOST }} 8067 || true
+          curl -s -X POST "https://discord.com/api/v10/channels/${{ secrets.DISCORD_CHANNEL_ID }}/messages" \
+            -H "Authorization: Bot ${{ secrets.DISCORD_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\":\"🚀 **Server is up on version $VERSION!** <@1032528161889603594> <@1222422715974156298>\"}"
+          echo "Discord notification sent"
+
   release:
     name: Create GitHub Release
     if: startsWith(github.ref, 'refs/tags/v')
