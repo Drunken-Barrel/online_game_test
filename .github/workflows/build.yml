@@ -86,7 +86,7 @@ jobs:
             pkill -f LinuxDedicated 2>/dev/null || true &&
             unzip -o new.zip &&
             chmod +x LinuxDedicatedServer LinuxDedicatedServer.sh &&
-            setsid ./LinuxDedicatedServer.sh > server.log 2>&1 &
+            tmux new-session -d -s godot-server './LinuxDedicatedServer.sh > server.log 2>&1'
             sleep 3
           "
 
