@@ -74,20 +74,22 @@ jobs:
           path: ./server
 
       - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.HOMELAB_SSH_KEY }}
+
+      - name: Add host key
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.HOMELAB_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.HOMELAB_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to Homelab
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
+          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
             pkill -f LinuxDedicated 2>/dev/null || true
           "
-          scp -o StrictHostKeyChecking=no ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
-          ssh -o StrictHostKeyChecking=no ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
+          scp ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
+          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
             unzip -o new.zip &&
             chmod +x LinuxDedicatedServer LinuxDedicatedServer.sh &&
