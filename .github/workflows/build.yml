@@ -112,7 +112,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           body: |
-            Auto-built from commit ${{ github.sha }}
+            ${{ github.actor }} triggered this release from commit ${{ github.sha }}
           files: |
             ./release/LinuxDedicatedServer.zip
             ./release/WindowsClient.zip
