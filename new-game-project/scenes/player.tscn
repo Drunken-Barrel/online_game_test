@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://nfkrti1qf6s6"]
 
-[ext_resource type="Texture2D" uid="uid://csg6ci78xx1eo" path="res://sprites/icon.svg" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://gdpf6aq6dsc3" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://bu4k18qumo87h" path="res://sprites/heavy.jpg" id="2_g2els"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(128, 128)
@@ -21,7 +21,7 @@ script = ExtResource("1_g2els")
 shape = SubResource("RectangleShape2D_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1605883829]
-texture = ExtResource("1_3vyb7")
+texture = ExtResource("2_g2els")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=391104119]
 replication_config = SubResource("SceneReplicationConfig_g2els")
