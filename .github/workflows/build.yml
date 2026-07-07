@@ -80,17 +80,11 @@ jobs:
 
       - name: Deploy to Homelab
         run: |
-          set +e
-          echo "=== Step 1: Kill old server ==="
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
             pkill -f LinuxDedicated 2>/dev/null || true
           "
-          echo "Exit code: $?"
-          echo "=== Step 2: Transfer file ==="
           cat ./server/LinuxDedicatedServer.zip | ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "cat > ~/godot_server/new.zip"
-          echo "Exit code: $?"
-          echo "=== Step 3: Extract and start ==="
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
             unzip -o new.zip &&
@@ -98,7 +92,6 @@ jobs:
             nohup ./LinuxDedicatedServer.sh > server.log 2>&1 &
             sleep 2
           "
-          echo "Exit code: $?"
 
   release:
     name: Create GitHub Release
