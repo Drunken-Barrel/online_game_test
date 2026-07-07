@@ -1,0 +1,89 @@
+name: Build & Deploy Game Server
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'new-game-project/**'
+
+jobs:
+  export:
+    name: Export Game Builds
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: new-game-project
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Godot 4.7 Headless
+        run: |
+          wget -q -O godot-headless.zip "https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip"
+          unzip -q godot-headless.zip
+          chmod +x Godot_v4.7-stable_linux.x86_64
+          mv Godot_v4.7-stable_linux.x86_64 godot
+          echo "GODOT_BIN=$(pwd)/godot" >> $GITHUB_ENV
+
+      - name: Install Export Templates
+        run: |
+          wget -q -O templates.tpz "https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_export_templates.tpz"
+          mkdir -p ~/.godot/export_templates/4.7.stable
+          unzip -q templates.tpz -d ~/.godot/export_templates/4.7.stable
+          mv ~/.godot/export_templates/4.7.stable/templates/* ~/.godot/export_templates/4.7.stable/
+          rm -rf ~/.godot/export_templates/4.7.stable/templates
+
+      - name: Export Linux Dedicated Server
+        run: |
+          mkdir -p ../release-versions
+          $GODOT_BIN --headless --export-release "Linux" ../release-versions/LinuxDedicatedServer.zip
+
+      - name: Export Windows Desktop
+        run: |
+          $GODOT_BIN --headless --export-release "Windows Desktop" ../release-versions/WindowsDedicatedServer.zip
+
+      - name: Export macOS
+        run: |
+          $GODOT_BIN --headless --export-release "macOS" ../release-versions/MacDedicatedServer.zip
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-servers
+          path: release-versions/
+          retention-days: 7
+
+  deploy:
+    name: Deploy Linux Server to Homelab
+    needs: export
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Linux server build
+        uses: actions/download-artifact@v4
+        with:
+          name: game-servers
+          path: ./server
+
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HOMELAB_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.HOMELAB_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Homelab
+        run: |
+          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
+            cd ~/godot_server &&
+            pkill -f LinuxDedicated 2>/dev/null || true
+          "
+          scp ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
+          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
+            cd ~/godot_server &&
+            unzip -o new.zip &&
+            chmod +x LinuxDedicatedServer LinuxDedicatedServer.sh &&
+            nohup ./LinuxDedicatedServer.sh > server.log 2>&1 &
+            sleep 2
+          "
