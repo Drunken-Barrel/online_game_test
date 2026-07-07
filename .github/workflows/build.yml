@@ -78,17 +78,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.HOMELAB_SSH_KEY }}
 
-      - name: Add host key
-        run: |
-          ssh-keyscan -H ${{ secrets.HOMELAB_HOST }} >> ~/.ssh/known_hosts
-
       - name: Deploy to Homelab
         run: |
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
             pkill -f LinuxDedicated 2>/dev/null || true
           "
-          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
+          cat ./server/LinuxDedicatedServer.zip | ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "cat > ~/godot_server/new.zip"
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
             unzip -o new.zip &&
