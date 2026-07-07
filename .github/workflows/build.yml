@@ -113,6 +113,7 @@ jobs:
           name: ${{ github.ref_name }}
           body: |
             ${{ github.actor }} triggered this release from commit ${{ github.sha }}
+          generate_release_notes: true
           files: |
             ./release/LinuxDedicatedServer.zip
             ./release/WindowsClient.zip
