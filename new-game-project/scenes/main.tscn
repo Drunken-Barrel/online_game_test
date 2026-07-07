@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://nfkrti1qf6s6" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://pgd48crcavyt" path="res://scripts/multiplayer_spawner.gd" id="2_sugp2"]
+[ext_resource type="PackedScene" uid="uid://xwmgk8i8l5qx" path="res://scenes/network_buttons.tscn" id="3_sugp2"]
 
 [node name="Main" type="Node" unique_id=1656760545]
 
@@ -10,3 +11,6 @@ _spawnable_scenes = PackedStringArray("uid://nfkrti1qf6s6")
 spawn_path = NodePath("..")
 script = ExtResource("2_sugp2")
 network_player = ExtResource("1_o5qli")
+network_buttons = ExtResource("3_sugp2")
+
+[node name="NetworkButtons" parent="." unique_id=1982240474 instance=ExtResource("3_sugp2")]
