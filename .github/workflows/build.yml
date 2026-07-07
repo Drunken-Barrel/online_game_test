@@ -33,6 +33,15 @@ jobs:
           mv Godot_v4.7-stable_linux.x86_64 godot
           echo "GODOT_BIN=$(pwd)/godot" >> $GITHUB_ENV
 
+      - name: Diagnose Godot version and export platforms
+        run: |
+          echo "=== GODOT VERSION ==="
+          $GODOT_BIN --version
+          echo ""
+          echo "=== HELP TEXT (export section) ==="
+          $GODOT_BIN --headless --help 2>&1 | grep -A10 "Export" | head -30 || true
+          echo ""
+
       - name: Install Export Templates
         run: |
           wget -q -O templates.tpz "https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_export_templates.tpz"
@@ -40,6 +49,18 @@ jobs:
           unzip -q templates.tpz -d ~/.local/share/godot/export_templates/4.7.stable
           mv ~/.local/share/godot/export_templates/4.7.stable/templates/* ~/.local/share/godot/export_templates/4.7.stable/
           rm -rf ~/.local/share/godot/export_templates/4.7.stable/templates
+          ls ~/.local/share/godot/export_templates/4.7.stable/ | head -20
+
+      - name: Test Windows export with blank project
+        run: |
+          mkdir -p /tmp/test-windows
+          printf '%s\n' '; Engine configuration file.' 'config_version=5' '[application]' 'config/name="TestWindows"' 'run/main_scene=""' 'config/features=PackedStringArray("4.7")' > /tmp/test-windows/project.godot
+          printf '%s\n' '[runnable_presets]' '' 'Windows="Windows Desktop"' '' '[preset.0]' '' 'name="Windows Desktop"' 'platform="Windows Desktop"' 'runnable=true' 'export_path="../test-windows-build.zip"' '' '[preset.0.options]' '' 'custom_template/debug=""' 'custom_template/release=""' 'debug/export_console_wrapper=2' 'binary_format/embed_pck=true' 'binary_format/architecture="x86_64"' > /tmp/test-windows/export_presets.cfg
+          echo "=== TEST PROJECT ==="
+          cat /tmp/test-windows/project.godot
+          cat /tmp/test-windows/export_presets.cfg
+          echo "=== EXPORT TEST ==="
+          $GODOT_BIN --headless --path /tmp/test-windows --export-release "Windows Desktop" /tmp/test-windows-build.zip 2>&1 || echo "EXPORT FAILED"
 
       - name: Export Linux Dedicated Server
         run: |
