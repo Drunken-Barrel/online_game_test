@@ -83,10 +83,10 @@ jobs:
           rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=15" ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=15 ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
-            pkill -f LinuxDedicated 2>/dev/null || true &&
+            sudo systemctl stop godot-server &&
             unzip -o new.zip &&
             chmod +x LinuxDedicatedServer LinuxDedicatedServer.sh &&
-            tmux new-session -d -s godot-server './LinuxDedicatedServer.sh > server.log 2>&1'
+            sudo systemctl start godot-server &&
             sleep 3
           "
 
