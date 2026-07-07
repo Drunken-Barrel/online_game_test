@@ -46,9 +46,9 @@ jobs:
           mkdir -p ../release-versions
           $GODOT_BIN --headless --export-release "Linux" ../release-versions/LinuxDedicatedServer.zip
 
-      - name: Export Windows Desktop
+      - name: Export Windows
         run: |
-          $GODOT_BIN --headless --export-release "Windows Desktop" ../release-versions/WindowsDedicatedServer.zip
+          $GODOT_BIN --headless --export-release "Windows" ../release-versions/WindowsDedicatedServer.zip
 
       - name: Export macOS
         run: |
