@@ -82,12 +82,12 @@ jobs:
 
       - name: Deploy to Homelab
         run: |
-          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
+          ssh -o StrictHostKeyChecking=no ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
             pkill -f LinuxDedicated 2>/dev/null || true
           "
-          scp ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
-          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
+          scp -o StrictHostKeyChecking=no ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
+          ssh -o StrictHostKeyChecking=no ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
             unzip -o new.zip &&
             chmod +x LinuxDedicatedServer LinuxDedicatedServer.sh &&
