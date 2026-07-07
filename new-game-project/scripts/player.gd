@@ -1,8 +1,12 @@
 extends CharacterBody2D
 class_name Player
-@export var speed: int = 100
+@export var speed: int = 300
 @export var CustomMultiplayerSpawner: PackedScene
 @onready var screen_size: Vector2 = get_viewport_rect().size
+
+func _ready() -> void:
+	# connect the disconnect signal to the despawn func
+	multiplayer.peer_disconnected.connect(despawn_player)
 
 func _enter_tree() -> void:
 	# give the player authority over themself
@@ -30,5 +34,6 @@ func _process(delta: float) -> void:
 	# move the player
 	position += velocity * delta
 
-func despawn_player():
-	queue_free()
+func despawn_player(id):
+	if id == int(name):
+		queue_free()

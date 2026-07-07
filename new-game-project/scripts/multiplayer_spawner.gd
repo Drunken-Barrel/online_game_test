@@ -5,7 +5,6 @@ extends MultiplayerSpawner
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(spawn_player)
-	multiplayer.peer_disconnected.connect(Player.despawn_player())
 
 # id is a random number generated on connect
 func spawn_player(id: int) -> void:
@@ -17,10 +16,3 @@ func spawn_player(id: int) -> void:
 	player.name = str(id)
 	print(id)
 	get_node(spawn_path).call_deferred("add_child",player)
-
-#func despawn_player(id) -> void:
-	## kick out anyone who isn't the server
-	#if !multiplayer.is_server(): return
-	#print(id)
-	#var player = str(id)
-	#remove_player.emit(player)
