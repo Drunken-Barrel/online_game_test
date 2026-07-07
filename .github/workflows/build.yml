@@ -80,13 +80,10 @@ jobs:
 
       - name: Deploy to Homelab
         run: |
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=15" ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=15 ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
             cd ~/godot_server &&
-            pkill -f LinuxDedicated 2>/dev/null || true
-          "
-          cat ./server/LinuxDedicatedServer.zip | ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "cat > ~/godot_server/new.zip"
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
-            cd ~/godot_server &&
+            pkill -f LinuxDedicated 2>/dev/null || true &&
             unzip -o new.zip &&
             chmod +x LinuxDedicatedServer LinuxDedicatedServer.sh &&
             nohup ./LinuxDedicatedServer.sh > server.log 2>&1 &
@@ -111,10 +108,12 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          github_token: ${{ secrets.GH_PAT }}
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           body: |
-            Auto-built from commit ${{ github.sha }}
+            ${{ github.actor }} triggered this release from commit ${{ github.sha }}
+          generate_release_notes: true
           files: |
             ./release/LinuxDedicatedServer.zip
             ./release/WindowsClient.zip
