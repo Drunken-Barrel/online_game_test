@@ -1,6 +1,7 @@
 name: Build & Deploy Game Server
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -35,10 +36,10 @@ jobs:
       - name: Install Export Templates
         run: |
           wget -q -O templates.tpz "https://github.com/godotengine/godot/releases/download/4.7-stable/Godot_v4.7-stable_export_templates.tpz"
-          mkdir -p ~/.godot/export_templates/4.7.stable
-          unzip -q templates.tpz -d ~/.godot/export_templates/4.7.stable
-          mv ~/.godot/export_templates/4.7.stable/templates/* ~/.godot/export_templates/4.7.stable/
-          rm -rf ~/.godot/export_templates/4.7.stable/templates
+          mkdir -p ~/.local/share/godot/export_templates/4.7.stable
+          unzip -q templates.tpz -d ~/.local/share/godot/export_templates/4.7.stable
+          mv ~/.local/share/godot/export_templates/4.7.stable/templates/* ~/.local/share/godot/export_templates/4.7.stable/
+          rm -rf ~/.local/share/godot/export_templates/4.7.stable/templates
 
       - name: Export Linux Dedicated Server
         run: |
