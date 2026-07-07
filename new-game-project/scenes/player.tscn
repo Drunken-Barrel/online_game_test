@@ -29,5 +29,7 @@ shape = SubResource("CircleShape2D_g2els")
 [node name="PlayerSprite" type="Sprite2D" parent="." unique_id=1605883829]
 texture = ExtResource("2_g2els")
 
+[node name="PlayerCamera" type="Camera2D" parent="." unique_id=479202094]
+
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=391104119]
 replication_config = SubResource("SceneReplicationConfig_g2els")
