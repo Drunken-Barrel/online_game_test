@@ -84,18 +84,11 @@ jobs:
 
       - name: Deploy to Homelab
         run: |
-          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
-            cd ~/godot_server &&
-            pkill -f LinuxDedicated 2>/dev/null || true
-          "
-          scp ./server/LinuxDedicatedServer.zip ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }}:~/godot_server/new.zip
-          ssh ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "
-            cd ~/godot_server &&
-            unzip -o new.zip &&
-            chmod +x LinuxDedicatedServer LinuxDedicatedServer.sh &&
-            nohup ./LinuxDedicatedServer.sh > server.log 2>&1 &
-            sleep 2
-          "
+          echo "=== Testing connectivity ==="
+          nc -zv -w5 ${{ secrets.HOMELAB_HOST }} 22 2>&1 || echo "PORT CHECK FAILED"
+          ping -c1 -W3 ${{ secrets.HOMELAB_HOST }} 2>&1 | tail -1 || echo "PING FAILED"
+          echo "=== SSH with verbose ==="
+          ssh -vvv -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 ${{ secrets.HOMELAB_USER }}@${{ secrets.HOMELAB_HOST }} "echo SSH_OK" 2>&1 || echo "SSH FAILED"
 
   release:
     name: Create GitHub Release
