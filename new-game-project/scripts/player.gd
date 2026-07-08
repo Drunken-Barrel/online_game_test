@@ -3,7 +3,7 @@ extends CharacterBody2D
 # game stat variables
 @export var speed: int = 300
 # defence/armour stats
-@export var max_defence: int = 500:
+@export var max_defence = 500:
 	set(value):
 		max_defence = value
 		DefenceBar.max_value = max_defence
@@ -17,7 +17,7 @@ var defence: int = 0:
 		print("defence updated")
 		DefenceBar.value = defence
 # health stats
-@export var max_health: int = 500:
+@export var max_health = 500:
 	set(value):
 		max_health = value
 		HealthBar.max_value = max_health
@@ -31,7 +31,7 @@ var health: int = 0:
 		print("health updated")
 		HealthBar.value = health
 # stamina stats
-@export var max_stamina: int = 500:
+@export var max_stamina = 500:
 	set(value):
 		max_stamina = value
 		StaminaBar.max_value = max_stamina

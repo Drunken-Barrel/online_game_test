@@ -13,22 +13,22 @@ properties/0/replication_mode = 2
 properties/1/path = NodePath("PlayerSprite:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath("StatBars/ArmourBar:max_value")
+properties/2/path = NodePath("StatBars/HealthBar:max_value")
 properties/2/spawn = true
 properties/2/replication_mode = 2
-properties/3/path = NodePath("StatBars/ArmourBar:value")
+properties/3/path = NodePath("StatBars/HealthBar:value")
 properties/3/spawn = true
 properties/3/replication_mode = 2
-properties/4/path = NodePath("StatBars/HealthBar:max_value")
+properties/4/path = NodePath("StatBars/StaminaBar:max_value")
 properties/4/spawn = true
 properties/4/replication_mode = 2
-properties/5/path = NodePath("StatBars/HealthBar:value")
+properties/5/path = NodePath("StatBars/StaminaBar:value")
 properties/5/spawn = true
 properties/5/replication_mode = 2
-properties/6/path = NodePath("StatBars/StaminaBar:max_value")
+properties/6/path = NodePath("StatBars/DefenceBar:max_value")
 properties/6/spawn = true
 properties/6/replication_mode = 2
-properties/7/path = NodePath("StatBars/StaminaBar:value")
+properties/7/path = NodePath("StatBars/DefenceBar:value")
 properties/7/spawn = true
 properties/7/replication_mode = 2
 
@@ -45,7 +45,8 @@ bg_color = Color(0.8723631, 0.48930538, 0, 1)
 z_index = 1
 collision_layer = 4
 collision_mask = 3
-floor_constant_speed = true
+floor_stop_on_slope = false
+floor_snap_length = 0.0
 script = ExtResource("1_g2els")
 
 [node name="PlayerSprite" type="Sprite2D" parent="." unique_id=1605883829]
@@ -74,15 +75,6 @@ grow_horizontal = 2
 layout_mode = 0
 offset_right = 128.0
 offset_bottom = 27.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_2j3ho")
-value = 50.0
-
-[node name="ArmourBar" type="ProgressBar" parent="StatBars" unique_id=653486572]
-layout_mode = 0
-offset_left = 125.0
-offset_top = 194.0
-offset_right = 253.0
-offset_bottom = 221.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_2j3ho")
 value = 50.0
 
