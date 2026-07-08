@@ -11,19 +11,28 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sb4sm")
 
-[node name="ServerButton" type="Button" parent="." unique_id=1304775034]
+[node name="LocalServerButton" type="Button" parent="." unique_id=1304775034]
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
-text = "Server"
+text = "Host local server"
 
-[node name="ClientButton" type="Button" parent="." unique_id=1999876749]
+[node name="LocalClientButton" type="Button" parent="." unique_id=1999876749]
 layout_mode = 0
 offset_left = 2.0
 offset_top = 34.0
 offset_right = 55.0
 offset_bottom = 65.0
-text = "Client"
+text = "Join local server"
 
-[connection signal="pressed" from="ServerButton" to="." method="_on_server_button_pressed"]
-[connection signal="pressed" from="ClientButton" to="." method="_on_client_button_pressed"]
+[node name="OnlineClientButton" type="Button" parent="." unique_id=1983465928]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 69.0
+offset_right = 144.0
+offset_bottom = 100.0
+text = "Join online server"
+
+[connection signal="pressed" from="LocalServerButton" to="." method="_on_local_server_button_pressed"]
+[connection signal="pressed" from="LocalClientButton" to="." method="_on_local_client_button_pressed"]
+[connection signal="pressed" from="OnlineClientButton" to="." method="_on_online_client_button_pressed"]
