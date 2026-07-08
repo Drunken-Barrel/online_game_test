@@ -2,7 +2,7 @@ extends Node
 
 # constants
 # Michael's ip is 114.75.22.30
-const IP_ADDRESS: String = "LocalHost"
+const IP_ADDRESS: String = "114.75.22.30"
 const PORT: int = 8067
 
 # variables
