@@ -10,26 +10,94 @@ radius = 64.0
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath(".:scale")
+properties/1/path = NodePath("PlayerSprite:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath("PlayerSprite:rotation")
+properties/2/path = NodePath("StatBars/ArmourBar:max_value")
 properties/2/spawn = true
 properties/2/replication_mode = 2
+properties/3/path = NodePath("StatBars/ArmourBar:value")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath("StatBars/HealthBar:max_value")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath("StatBars/HealthBar:value")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("StatBars/StaminaBar:max_value")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath("StatBars/StaminaBar:value")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2j3ho"]
+bg_color = Color(0.43891108, 0.6368207, 0.69254255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iu6js"]
+bg_color = Color(0, 0.6862745, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prqit"]
+bg_color = Color(0.8723631, 0.48930538, 0, 1)
 
 [node name="Player" type="CharacterBody2D" unique_id=1456189697]
+z_index = 1
 collision_layer = 4
 collision_mask = 3
 floor_constant_speed = true
 script = ExtResource("1_g2els")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1881931863]
-shape = SubResource("CircleShape2D_g2els")
-
 [node name="PlayerSprite" type="Sprite2D" parent="." unique_id=1605883829]
 texture = ExtResource("2_g2els")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1881931863]
+shape = SubResource("CircleShape2D_g2els")
 
 [node name="PlayerCamera" type="Camera2D" parent="." unique_id=479202094]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=391104119]
 replication_config = SubResource("SceneReplicationConfig_g2els")
+
+[node name="StatBars" type="Control" parent="." unique_id=865671209]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 91.0
+grow_horizontal = 2
+
+[node name="DefenceBar" type="ProgressBar" parent="StatBars" unique_id=2117192552]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 27.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_2j3ho")
+value = 50.0
+
+[node name="ArmourBar" type="ProgressBar" parent="StatBars" unique_id=653486572]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 194.0
+offset_right = 253.0
+offset_bottom = 221.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_2j3ho")
+value = 50.0
+
+[node name="HealthBar" type="ProgressBar" parent="StatBars" unique_id=580572600]
+layout_mode = 0
+offset_top = 27.0
+offset_right = 128.0
+offset_bottom = 54.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_iu6js")
+value = 50.0
+
+[node name="StaminaBar" type="ProgressBar" parent="StatBars" unique_id=1646515165]
+layout_mode = 0
+offset_top = 54.0
+offset_right = 128.0
+offset_bottom = 81.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_prqit")
+value = 50.0
