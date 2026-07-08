@@ -93,3 +93,28 @@ offset_right = 128.0
 offset_bottom = 81.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_prqit")
 value = 50.0
+
+[node name="TestButtons" type="Control" parent="." unique_id=1630703918]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DamageButton" type="Button" parent="TestButtons" unique_id=920441158]
+layout_mode = 0
+offset_left = -111.0
+offset_top = -100.0
+offset_right = 110.0
+offset_bottom = -69.0
+text = "Deal damage to all enemies"
+
+[node name="HealButton" type="Button" parent="TestButtons" unique_id=2024474357]
+layout_mode = 0
+offset_left = -37.0
+offset_top = -137.0
+offset_right = 36.0
+offset_bottom = -106.0
+text = "heal self"
+
+[connection signal="pressed" from="TestButtons/DamageButton" to="." method="_on_damage_button_pressed"]
+[connection signal="pressed" from="TestButtons/HealButton" to="." method="_on_heal_button_pressed"]

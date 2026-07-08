@@ -24,6 +24,7 @@ config/icon="res://sprites/icon.svg"
 [autoload]
 
 NetworkHandler="*res://scripts/network_handler.gd"
+PvpManager="*uid://6o74ncgh65j8"
 
 [display]
 

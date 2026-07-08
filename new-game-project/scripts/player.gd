@@ -5,10 +5,14 @@ extends CharacterBody2D
 # defence/armour stats
 @export var max_defence = 500:
 	set(value):
+		# kick out anyone who isn't the player in control
+		if !is_multiplayer_authority(): return
 		max_defence = value
 		DefenceBar.max_value = max_defence
 var defence: int = 0:
 	set(value):
+		# kick out anyone who isn't the player in control
+		if !is_multiplayer_authority(): return
 		if value > max_defence:
 			value = max_defence
 		defence = value
@@ -19,24 +23,34 @@ var defence: int = 0:
 # health stats
 @export var max_health = 500:
 	set(value):
+		# kick out anyone who isn't the player in control
+		if !is_multiplayer_authority(): return
 		max_health = value
 		HealthBar.max_value = max_health
 var health: int = 0:
 	set(value):
+		# kick out anyone who isn't the player in control
+		if !is_multiplayer_authority(): return
+		print(health)
+		print(value)
 		if value > max_health:
 			value = max_health
 		health = value
 		if health <= 0:
 			die()
-		print("health updated")
+		print("health updated: " + str(health))
 		HealthBar.value = health
 # stamina stats
 @export var max_stamina = 500:
 	set(value):
+		# kick out anyone who isn't the player in control
+		if !is_multiplayer_authority(): return
 		max_stamina = value
 		StaminaBar.max_value = max_stamina
 var stamina: int = 0:
 	set(value):
+		# kick out anyone who isn't the player in control
+		if !is_multiplayer_authority(): return
 		if value > max_stamina:
 			value = max_stamina
 		stamina = value
@@ -53,14 +67,19 @@ var stamina: int = 0:
 @onready var StaminaBar: ProgressBar = $StatBars/StaminaBar
 
 func _ready() -> void:
-	# connect the disconnect signal to the despawn func
+	# connect the signals and functions
 	multiplayer.peer_disconnected.connect(despawn_player)
+	PvpManager.output_damage_signal.connect(take_damage)
 	# make the player camera the current camera for the client controlling them
 	if is_multiplayer_authority():
 		PlayerCamera.make_current()
 	# move the player to the middle (will be changed to spawn points when menus are added)
 	position = Vector2(1000,200)
-	# set all the stats to the starting numbers
+	# update all health bars to the starting max health
+	DefenceBar.max_value = max_defence
+	HealthBar.max_value = max_health
+	StaminaBar.max_value = max_stamina
+	# set all the stats to the starting numbers, using self. to force the setter code to run
 	defence = max_defence
 	health = max_health
 	stamina = max_stamina
@@ -107,3 +126,18 @@ func armour_break() -> void:
 # manages what happens when the player dies
 func die() -> void:
 	pass
+
+func heal(healing) -> void:
+	health += healing
+
+func take_damage(user_id: String,damage: int):
+	# cancel if the signal is coming from self
+	if name == user_id: return
+	health -= damage
+	print("damage dealt")
+
+func _on_damage_button_pressed() -> void:
+	PvpManager.output_damage(name,50)
+
+func _on_heal_button_pressed() -> void:
+	heal(50)

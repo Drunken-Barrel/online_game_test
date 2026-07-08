@@ -20,7 +20,7 @@ func start_server() -> void:
 	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
 
-func start_client(type) -> void:
+func start_client(type: String) -> void:
 	peer = ENetMultiplayerPeer.new()
 	if type == "online":
 		peer.create_client(IP_ADDRESS,PORT)
