@@ -9,12 +9,15 @@ class_name Player
 func _ready() -> void:
 	# connect the disconnect signal to the despawn func
 	multiplayer.peer_disconnected.connect(despawn_player)
+	# make the player camera the current camera for the client controlling them
 	if is_multiplayer_authority():
 		PlayerCamera.make_current()
 
 func _enter_tree() -> void:
-	# give the player authority over themself and their camera
+	# give the client authority over their player
 	set_multiplayer_authority(name.to_int())
+	# move the player to the middle (will be changed to spawn points when menus are added)
+	position = Vector2(1000,200)
 
 func _process(_delta: float) -> void:
 	# kick out anyone who isn't the player in control

@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://nfkrti1qf6s6" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://pgd48crcavyt" path="res://scripts/multiplayer_spawner.gd" id="2_sugp2"]
 [ext_resource type="PackedScene" uid="uid://xwmgk8i8l5qx" path="res://scenes/network_buttons.tscn" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://d0yro7c43kteh" path="res://scenes/wall.tscn" id="4_jyhfs"]
 
 [node name="Main" type="Node" unique_id=1656760545]
 
@@ -13,3 +14,53 @@ script = ExtResource("2_sugp2")
 network_player = ExtResource("1_o5qli")
 
 [node name="NetworkButtons" parent="." unique_id=1982240474 instance=ExtResource("3_sugp2")]
+z_index = 1
+
+[node name="BorderContainer" type="Node" parent="." unique_id=6613814]
+
+[node name="BorderTop" parent="BorderContainer" unique_id=1653514050 instance=ExtResource("4_jyhfs")]
+position = Vector2(960.00006, 64)
+scale = Vector2(15, 1)
+
+[node name="BorderBottom" parent="BorderContainer" unique_id=405046937 instance=ExtResource("4_jyhfs")]
+position = Vector2(960, 1016)
+scale = Vector2(15, 1)
+
+[node name="BorderLeft" parent="BorderContainer" unique_id=2093885017 instance=ExtResource("4_jyhfs")]
+position = Vector2(64, 528.00006)
+scale = Vector2(1, 7)
+
+[node name="BorderRight" parent="BorderContainer" unique_id=758455877 instance=ExtResource("4_jyhfs")]
+position = Vector2(1856, 552)
+scale = Vector2(1, 7)
+
+[node name="TerrainContainer" type="Node" parent="." unique_id=1097922765]
+
+[node name="LPiece" type="Node" parent="TerrainContainer" unique_id=269254525]
+
+[node name="LPieceHorizontal" parent="TerrainContainer/LPiece" unique_id=539598444 instance=ExtResource("4_jyhfs")]
+position = Vector2(1485, 766)
+scale = Vector2(2, 0.5)
+
+[node name="LPieceVertical" parent="TerrainContainer/LPiece" unique_id=1378381062 instance=ExtResource("4_jyhfs")]
+position = Vector2(1581, 606)
+scale = Vector2(0.5, 2)
+
+[node name="45Degree" parent="TerrainContainer" unique_id=2080659201 instance=ExtResource("4_jyhfs")]
+position = Vector2(985.00006, 616.00006)
+rotation = 0.7853982
+scale = Vector2(3, 0.5)
+
+[node name="Thin" parent="TerrainContainer" unique_id=867429543 instance=ExtResource("4_jyhfs")]
+position = Vector2(1354, 317)
+scale = Vector2(2, 0.05)
+
+[node name="TightTunnel" type="Node" parent="TerrainContainer" unique_id=1264243527]
+
+[node name="TightTunnelHorizontal" parent="TerrainContainer/TightTunnel" unique_id=2133412696 instance=ExtResource("4_jyhfs")]
+position = Vector2(448, 792)
+scale = Vector2(3, 0.5)
+
+[node name="TightTunnelVertical" parent="TerrainContainer/TightTunnel" unique_id=82749423 instance=ExtResource("4_jyhfs")]
+position = Vector2(288, 568)
+scale = Vector2(0.5, 3)
